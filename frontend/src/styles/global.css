@@ -33,3 +33,24 @@ body { margin: 0; background: #f6f8fb; color: #1f2937; }
 .link { border: none; background: none; color: var(--brand); cursor: pointer; padding: 0; }
 .page-foot { display: flex; justify-content: space-between; margin-top: 8px; font-size: 12px; color: var(--muted); }
 .error-text { color: #b42318; }
+.notice-text { color: #067647; background: #ecfdf3; border: 1px solid #abefc6; border-radius: 6px; padding: 6px 10px; font-size: 12px; }
+.cell-warn { color: #b42318; font-weight: 600; }
+
+/* 评分快照子面板与质量门禁核对弹窗 */
+.sub-panel { margin-top: 20px; }
+.sub-panel h3 { font-size: 14px; margin: 0 0 8px; }
+.badge { display: inline-block; border-radius: 10px; padding: 2px 8px; font-size: 12px; white-space: nowrap; }
+.badge.ok { background: #ecfdf3; color: #067647; border: 1px solid #abefc6; }
+.badge.warn { background: #fffaeb; color: #b54708; border: 1px solid #fedf89; }
+.badge.err { background: #fef3f2; color: #b42318; border: 1px solid #fda29b; }
+.badge.muted { background: #f2f4f7; color: var(--muted); border: 1px solid var(--border); }
+
+.modal-overlay { position: fixed; inset: 0; background: rgba(16, 24, 40, 0.45); display: flex; align-items: center; justify-content: center; z-index: 50; }
+.modal { background: #fff; border-radius: 10px; width: 640px; max-width: 92vw; max-height: 86vh; overflow: auto; padding: 16px 18px; box-shadow: 0 12px 32px rgba(16, 24, 40, 0.24); }
+.modal-wide { width: 1080px; }
+.modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 14px; }
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; }
+.form-field span { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+.form-field input { width: 100%; border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; font-size: 13px; }
+.form-hint { font-size: 12px; color: var(--muted); margin: 10px 0 0; line-height: 1.6; }

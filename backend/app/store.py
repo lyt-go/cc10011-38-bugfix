@@ -10,13 +10,16 @@ from app.seed import SEED_ROWS
 
 
 class Store:
+    # 内部派生表（如评分快照）不作为业务模块出现在运营概览与健康检查里。
+    HIDDEN_MODULES = {"quality_snapshot"}
+
     def __init__(self) -> None:
         self._tables: dict[str, list[dict[str, Any]]] = {
             name: [dict(row) for row in rows] for name, rows in SEED_ROWS.items()
         }
 
     def module_names(self) -> list[str]:
-        return sorted(self._tables)
+        return sorted(name for name in self._tables if name not in self.HIDDEN_MODULES)
 
     def rows(self, module: str) -> list[dict[str, Any]]:
         return self._tables.setdefault(module, [])

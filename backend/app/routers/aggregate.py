@@ -19,14 +19,15 @@ STATUSES = ["草稿", "规则评审中", "已生效", "已废弃"]
 @router.get("", response_model=PageResult[dict])
 def list_entries(
     keyword: str | None = Query(default=None, description="按规则编号检索"),
+    dataset: str | None = Query(default=None, description="按输出数据集检索"),
     status: str | None = Query(default=None, description="草稿、规则评审中、已生效、已废弃"),
     page: int = 1,
     size: int = 20,
 ) -> PageResult[dict]:
-    """按规则编号与状态过滤聚合配置列表；没有数据时返回空页，不报错。"""
+    """按规则编号、输出数据集与状态过滤聚合配置列表；没有数据时返回空页，不报错。"""
     if size > 200:
         raise HTTPException(status_code=400, detail="每页最多 200 条，请缩小分页范围")
-    items, total = service.list_entries(keyword=keyword, status=status, page=page, size=size)
+    items, total = service.list_entries(keyword=keyword, dataset=dataset, status=status, page=page, size=size)
     return PageResult(items=items, total=total, page=page, size=size)
 
 
@@ -46,6 +47,17 @@ def create_entry(payload: EntryPayload) -> ActionResult:
     if missing:
         return ActionResult(ok=False, message=f"缺少必填字段：{'、'.join(missing)}")
     return ActionResult(ok=True, message="聚合规则已登记", entry=entry)
+
+
+@router.post("/{entry_id}/refresh", response_model=ActionResult)
+def refresh_dataset(entry_id: int, payload: EntryPayload) -> ActionResult:
+    """聚合数据集更新：落库最新维度指标并联动重算数据质量总分。"""
+    entry, message, recomputed = service.refresh_dataset(entry_id, payload.values)
+    if entry is None:
+        return ActionResult(ok=False, message=message)
+    entry = dict(entry)
+    entry["重算结果"] = recomputed
+    return ActionResult(ok=True, message=message, entry=entry)
 
 
 @router.post("/{entry_id}/actions", response_model=ActionResult)
